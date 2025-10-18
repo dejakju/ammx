@@ -1,13 +1,14 @@
+rem winDOOF build script
 @echo off
 
-rem build
+rem CUMpilation
 pushd libs\
 gcc -c toolbox.c -o toolbox.obj
 ar rcs toolbox.lib toolbox.obj
 popd
 gcc ammx.c -Llibs -ltoolbox -o ammx
 
-rem cleanup
+rem cleanAPP
 del libs\toolbox.lib
 del libs\toolbox.obj
 

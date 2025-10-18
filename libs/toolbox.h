@@ -1,7 +1,7 @@
 /*
     $VER:       toolbox.h 1.0
     $DATE:      2024-10-05 (2025-10-18)
-    $AUTHOR:    dejakju@gmail.com
+    $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
 #ifndef LIBS_TOOLBOX_H

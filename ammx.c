@@ -1,7 +1,7 @@
 /*
     $VER:       ammx.c 1.0
     $DATE:      2023-12-01 (2025-10-18)
-    $AUTHOR:    dejakju@gmail.com
+    $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
 
