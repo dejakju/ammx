@@ -1,6 +1,6 @@
 /*
     $VER:       toolbox.h 1.0
-    $DATE:      2024-10-05 (2025-10-18)
+    $DATE:      2024-10-05 (2025-10-27)
     $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
@@ -26,6 +26,74 @@
 
 
 ////////////////////////////////
+//------------------------------- Enum Types
+// NOTE(dejakju): 
+
+typedef enum AMMX_ReturnCodeTypeDef {
+    AMMX_RETURN_OK      = 0x00U,
+    AMMX_RETURN_WARN    = 0x05U,
+    AMMX_RETURN_ERROR   = 0x0AU,
+    AMMX_RETURN_FAIL    = 0x14U
+} AMMX_ReturnCodeTypeDef;
+
+typedef enum AMMX_ExecTypeDef {
+    AMMX_EXEC_DEFAULT    = 0x00,
+    AMMX_EXEC_DOS        = 0x01,
+    AMMX_EXEC_EVENT      = 0x02,
+    AMMX_EXEC_EXEC       = 0x04,
+    AMMX_EXEC_LIBRARY    = 0x08,
+    AMMX_EXEC_LIST       = 0x10,
+    AMMX_EXEC_NODE       = 0x200,
+    AMMX_EXEC_SEMAPHORE  = 0x400,
+    AMMX_EXEC_TASK       = 0x800,
+} AMMX_ExecTypeDef;
+
+typedef enum AMMX_StdHandleTypeDef {
+    AMMX_STD_INPUT_HANDLE   = 0x00U,
+    AMMX_STD_OUTPUT_HANDLE  = 0x01U,
+    AMMX_STD_ERROR_HANDLE   = 0x02U
+} AMMX_StdHandleTypeDef;
+
+typedef enum AMMX_StatusTypeDef {
+    AMMX_STATUS_OK      = 0x00U,
+    AMMX_STATUS_ERROR   = 0x01U,
+    AMMX_STATUS_BUSY    = 0x02U,
+    AMMX_STATUS_TIMEOUT = 0x03U
+} AMMX_StatusTypeDef;
+
+typedef enum AMMX_StackTypeDef {
+    AMMX_STACK_EMPTY    = (uint64_t) 0xffffffffffffffff,
+    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007fff,
+    AMMX_STACK_ISEMPTY  = (uint64_t) 0x000000007fffffff
+} AMMX_StackTypeDef;
+
+typedef enum AMMX_MonthTypeDef {
+    AMMX_JANUARY,
+    AMMX_FEBRUARY,
+    AMMX_MARCH,
+    AMMX_APRIL,
+    AMMX_MAY,
+    AMMX_JUNE,
+    AMMX_JULY,
+    AMMX_AUGUST,
+    AMMX_SEPTEMBER,
+    AMMX_OCTOBER,
+    AMMX_NOVEMBER,
+    AMMX_DECEMBER
+} AMMX_MonthTypeDef;
+
+typedef enum AMMX_DayOfWeekTypeDef {
+    AMMX_SUNDAY,
+    AMMX_MONDAY,
+    AMMX_TUESDAY,
+    AMMX_WEDNESDAY,
+    AMMX_THURSDAY,
+    AMMX_FRIDAY,
+    AMMX_SATURDAY
+} AMMX_DayOfWeekTypeDef;
+
+
+////////////////////////////////
 //------------------------------- Basic Types
 // NOTE(dejakju): 
 
@@ -36,7 +104,6 @@ typedef int64_t b64_t;
 typedef float   f32_t;
 typedef double  f64_t;
 typedef char*   string_t;
-
 typedef signed char         byte_t;
 typedef unsigned char       ubyte_t;
 typedef unsigned char       bytebits_t;
@@ -79,6 +146,11 @@ static f64_t tau_f64 = 6.28318530718;
 ////////////////////////////////
 //------------------------------- Compound Types
 // NOTE(dejakju): 
+
+typedef struct stack_t {
+    uint32_t values[AMMX_STACK_LENGTH];
+    uint32_t top;
+} stack_t;
 
 typedef struct v2s32_t {
     int32_t x;
@@ -225,79 +297,6 @@ typedef struct entire_file_t
 
 
 ////////////////////////////////
-//------------------------------- Enum Types
-// NOTE(dejakju): 
-
-typedef enum AMMX_ReturnCodeTypeDef {
-    AMMX_RETURN_OK      = 0x00U,
-    AMMX_RETURN_WARN    = 0x05U,
-    AMMX_RETURN_ERROR   = 0x0AU,
-    AMMX_RETURN_FAIL    = 0x14U
-} AMMX_ReturnCodeTypeDef;
-
-typedef enum AMMX_ExecTypeDef {
-    AMMX_DEFAULT    = 0x00U,
-    AMMX_DOS        = 0x01U,
-    AMMX_EXEC       = 0x02U,
-    AMMX_LIBRARY    = 0x03U,
-    AMMX_LIST       = 0x04U,
-    AMMX_NODE       = 0x05U,
-    AMMX_SEMAPHORE  = 0x06U,
-    AMMX_TASK       = 0x07U,
-    AMMX_EVENT      = 0x08U
-} AMMX_ExecTypeDef;
-
-typedef enum AMMX_StdHandleTypeDef {
-    AMMX_STD_INPUT_HANDLE   = 0x00U,
-    AMMX_STD_OUTPUT_HANDLE  = 0x01U,
-    AMMX_STD_ERROR_HANDLE   = 0x02U
-} AMMX_StdHandleTypeDef;
-
-typedef enum AMMX_StatusTypeDef {
-    AMMX_STATUS_OK      = 0x00U,
-    AMMX_STATUS_ERROR   = 0x01U,
-    AMMX_STATUS_BUSY    = 0x02U,
-    AMMX_STATUS_TIMEOUT = 0x03U
-} AMMX_StatusTypeDef;
-
-typedef enum AMMX_StackTypeDef {
-    AMMX_STACK_EMPTY    = (uint64_t) 0xffffffffffffffff,
-    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007fff,
-    AMMX_STACK_ISEMPTY  = (uint64_t) 0x000000007fffffff
-} AMMX_StackTypeDef;
-
-typedef struct stack_t {
-    uint32_t values[AMMX_STACK_LENGTH];
-    uint32_t top;
-} stack_t;
-
-typedef enum AMMX_MonthTypeDef {
-    AMMX_JANUARY,
-    AMMX_FEBRUARY,
-    AMMX_MARCH,
-    AMMX_APRIL,
-    AMMX_MAY,
-    AMMX_JUNE,
-    AMMX_JULY,
-    AMMX_AUGUST,
-    AMMX_SEPTEMBER,
-    AMMX_OCTOBER,
-    AMMX_NOVEMBER,
-    AMMX_DECEMBER
-} AMMX_MonthTypeDef;
-
-typedef enum AMMX_DayOfWeekTypeDef {
-    AMMX_SUNDAY,
-    AMMX_MONDAY,
-    AMMX_TUESDAY,
-    AMMX_WEDNESDAY,
-    AMMX_THURSDAY,
-    AMMX_FRIDAY,
-    AMMX_SATURDAY
-} AMMX_DayOfWeekTypeDef;
-
-
-////////////////////////////////
 //------------------------------- Function Declarations
 // NOTE(dejakju): 
 
@@ -318,8 +317,9 @@ void ammx_fflush();
 char* ammx_strrev(char *string);
 void ammx_d2c(int64_t number, char *buffer);
 int64_t ammx_c2d(char *string);
-b32_t ammx_stack_push(stack_t *stack, int32_t value);
-int32_t ammx_stack_pop(stack_t *stack);
+b32_t ammx_push(stack_t *stack, int32_t value);
+int32_t ammx_peek(stack_t *stack);
+int32_t ammx_pop(stack_t *stack);
 b32_t ammx_is_leap_year(int32_t year);
 char* ammx_string_from_month(AMMX_MonthTypeDef month);
 char* ammx_string_from_dayofweek(AMMX_DayOfWeekTypeDef day);

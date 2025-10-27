@@ -148,7 +148,7 @@ ammx_c2d(char *string)
 }
 
 b32_t
-ammx_stack_push(stack_t *stack, int32_t value)
+ammx_push(stack_t *stack, int32_t value)
 {
     if (stack->top >= AMMX_STACK_LENGTH - 1) return 0;
 
@@ -159,7 +159,17 @@ ammx_stack_push(stack_t *stack, int32_t value)
 }
 
 int32_t 
-ammx_stack_pop(stack_t *stack)
+ammx_peek(stack_t *stack)
+{
+    if (stack->top == AMMX_STACK_EMPTY) return AMMX_STACK_ISEMPTY;
+
+    int32_t result = stack->values[stack->top];
+
+    return result;
+}
+
+int32_t 
+ammx_pop(stack_t *stack)
 {
     if (stack->top == AMMX_STACK_EMPTY) return AMMX_STACK_ISEMPTY;
 
