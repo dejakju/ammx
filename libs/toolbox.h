@@ -61,12 +61,6 @@ typedef enum AMMX_StatusTypeDef {
     AMMX_STATUS_TIMEOUT = 0x03U
 } AMMX_StatusTypeDef;
 
-typedef enum AMMX_StackTypeDef {
-    AMMX_STACK_EMPTY    = (uint64_t) 0xffffffffffffffff,
-    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007fff,
-    AMMX_STACK_ISEMPTY  = (uint64_t) 0x000000007fffffff
-} AMMX_StackTypeDef;
-
 typedef enum AMMX_MonthTypeDef {
     AMMX_JANUARY,
     AMMX_FEBRUARY,
@@ -91,6 +85,12 @@ typedef enum AMMX_DayOfWeekTypeDef {
     AMMX_FRIDAY,
     AMMX_SATURDAY
 } AMMX_DayOfWeekTypeDef;
+
+typedef enum AMMX_StackTypeDef {
+    AMMX_STACK_EMPTY    = (uint64_t) 0x00U,
+    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007fff,
+    AMMX_STACK_ISEMPTY  = (uint64_t) 0x00U
+} AMMX_StackTypeDef;
 
 
 ////////////////////////////////
@@ -328,6 +328,14 @@ char* ammx_gettime();
 void ammx_datetime();
 entire_file_t ammx_read_entire_file(char* filename);
 void ammx_free_entire_file(entire_file_t* file);
+
+/// @brief Assembler function: maxofthree
+/// @param  integer
+/// @param  integer
+/// @param  integer
+/// @return the max number out of three
+int64_t maxofthree(int64_t, int64_t, int64_t);
+void test_maxofthree();
 
 
 #endif //LIBS_TOOLBOX_H
