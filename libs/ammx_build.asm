@@ -1,3 +1,8 @@
+;
+;*   $VER:       ammx_build.asm 1.2
+;*   $DATE:      2025-11-13 (2025-11-15)
+;*   $AUTHOR:    Goran (dejakju@gmail.com)
+;
 ; -----------------------------------------------------------------------------
 ; A 64-bit function that returns the maximum value of its three 64-bit integer
 ; arguments. The function has signature:

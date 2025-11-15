@@ -1,3 +1,8 @@
+;
+;*   $VER:       ammx_decrement.asm 1.0
+;*   $DATE:      2025-10-28 (2025-10-28)
+;*   $AUTHOR:    Goran (dejakju@gmail.com)
+;
 ; -----------------------------------------------------------------------------
 ; A 64-bit function that returns the value decreased by one.
 ; The function has signature:

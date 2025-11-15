@@ -1,6 +1,6 @@
 /*
-    $VER:       toolbox.h 1.0
-    $DATE:      2023-12-01 (2025-11-13)
+    $VER:       toolbox.h 1.1
+    $DATE:      2023-12-01 (2025-11-15)
     $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
@@ -13,7 +13,7 @@
 // NOTE(dejakju): 
 
 #define AMMX_VERSION    1
-#define AMMX_REVISION   0
+#define AMMX_REVISION   1
 
 
 ////////////////////////////////

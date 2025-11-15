@@ -1,3 +1,8 @@
+;
+;*   $VER:       ammx_maxofthree.asm 1.1
+;*   $DATE:      2025-10-28 (2025-11-15)
+;*   $AUTHOR:    Goran (dejakju@gmail.com)
+;
 ; -----------------------------------------------------------------------------
 ; A 64-bit function that returns the maximum value of its three 64-bit integer
 ; arguments. The function has signature:

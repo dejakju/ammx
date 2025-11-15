@@ -1,6 +1,6 @@
 /*
- *   $VER:       toolbox.c 1.0
- *   $DATE:      2023-12-01 (2025-11-13)
+ *   $VER:       toolbox.c 1.1
+ *   $DATE:      2023-12-01 (2025-11-15)
  *   $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
