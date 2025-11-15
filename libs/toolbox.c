@@ -1,7 +1,7 @@
 /*
-    $VER:       toolbox.c 1.0
-    $DATE:      2024-10-05 (2025-10-18)
-    $AUTHOR:    Goran (dejakju@gmail.com)
+ *   $VER:       toolbox.c 1.0
+ *   $DATE:      2023-12-01 (2025-11-13)
+ *   $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
 ////////////////////////////////
@@ -19,7 +19,8 @@
 
 void
 ammx_version() {
-    printf("\x1b[1;36m AMMX\x1b[0m version %d.%d (compiled %s, %s)\n", AMMX_VERSION, AMMX_REVISION, __TIME__, __DATE__);
+    printf("\x1b[1;36m AMMX\x1b[0m version %d.%d - ", AMMX_VERSION, AMMX_REVISION);
+    ammx_build();
     printf("Email: dejakju@gmail.com\n");
     printf("Web: https://github.com/dejakju/ammx\n");
 }
@@ -91,7 +92,7 @@ ammx_min(int64_t a, int64_t b)
 }
 
 void
-ammx_swap(int64_t *a, int64_t *b)
+ammx_swap(f64_t *a, f64_t *b)
 {
 	*a = *a + *b;
 	*b = *a - *b;
@@ -148,7 +149,7 @@ ammx_c2d(char *string)
 }
 
 b32_t
-ammx_push(stack_t *stack, int32_t value)
+ammx_push(stack_t *stack, int64_t value)
 {
     if (stack->top >= AMMX_STACK_LENGTH - 1) return 0;
 
@@ -158,22 +159,22 @@ ammx_push(stack_t *stack, int32_t value)
     return 1;
 }
 
-int32_t 
+int64_t 
 ammx_peek(stack_t *stack)
 {
     if (stack->top == AMMX_STACK_EMPTY) return AMMX_STACK_ISEMPTY;
 
-    int32_t result = stack->values[stack->top];
+    int64_t result = stack->values[stack->top];
 
     return result;
 }
 
-int32_t 
+int64_t 
 ammx_pop(stack_t *stack)
 {
     if (stack->top == AMMX_STACK_EMPTY) return AMMX_STACK_ISEMPTY;
 
-    int32_t result = stack->values[stack->top];
+    int64_t result = stack->values[stack->top];
     stack->top--;
 
     return result;
@@ -351,19 +352,4 @@ ammx_free_entire_file(entire_file_t* file)
     }
     
     file->Size = 0;
-}
-
-
-
-
-////
-void 
-test_maxofthree()
-{
-    printf("%ld\n", maxofthree(1, -4, -7));
-    printf("%ld\n", maxofthree(2, -6, 1));
-    printf("%ld\n", maxofthree(2, 3, 1));
-    printf("%ld\n", maxofthree(-2, 4, 3));
-    printf("%ld\n", maxofthree(2, -6, 5));
-    printf("%ld\n", maxofthree(2, 4, 6));
 }

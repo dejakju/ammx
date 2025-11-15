@@ -1,6 +1,6 @@
 /*
     $VER:       toolbox.h 1.0
-    $DATE:      2024-10-05 (2025-10-27)
+    $DATE:      2023-12-01 (2025-11-13)
     $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
@@ -87,9 +87,9 @@ typedef enum AMMX_DayOfWeekTypeDef {
 } AMMX_DayOfWeekTypeDef;
 
 typedef enum AMMX_StackTypeDef {
-    AMMX_STACK_EMPTY    = (uint64_t) 0x00U,
-    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007fff,
-    AMMX_STACK_ISEMPTY  = (uint64_t) 0x00U
+    AMMX_STACK_EMPTY    = (uint64_t) 0x000000007FFFFFFF,
+    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007FFF,
+    AMMX_STACK_ISEMPTY  = (uint64_t) 0x000000007FFFFFFF
 } AMMX_StackTypeDef;
 
 
@@ -148,8 +148,8 @@ static f64_t tau_f64 = 6.28318530718;
 // NOTE(dejakju): 
 
 typedef struct stack_t {
-    uint32_t values[AMMX_STACK_LENGTH];
-    uint32_t top;
+    int64_t values[AMMX_STACK_LENGTH];
+    int64_t top;
 } stack_t;
 
 typedef struct v2s32_t {
@@ -297,10 +297,21 @@ typedef struct entire_file_t
 
 
 ////////////////////////////////
+//------------------------------- Assembler Declarations
+// NOTE(dejakju): 
+
+extern void ammx_build();
+extern int64_t ammx_decrement(int64_t);
+extern int64_t ammx_increment(int64_t);
+extern int64_t ammx_maxofthree(int64_t, int64_t, int64_t);
+
+
+////////////////////////////////
 //------------------------------- Function Declarations
 // NOTE(dejakju): 
 
 void ammx_version();
+
 b32_t ammx_and(b32_t a, b32_t b);
 b32_t ammx_or(b32_t a, b32_t b);
 b32_t ammx_not(b32_t a);
@@ -312,14 +323,16 @@ b32_t ammx_imp(b32_t a, b32_t b);
 int64_t ammx_abs(int64_t a);
 int64_t ammx_max(int64_t a, int64_t b);
 int64_t ammx_min(int64_t a, int64_t b);
-void ammx_swap(int64_t *a, int64_t *b);
+void ammx_swap(f64_t *a, f64_t *b);
 void ammx_fflush();
 char* ammx_strrev(char *string);
+
 void ammx_d2c(int64_t number, char *buffer);
 int64_t ammx_c2d(char *string);
-b32_t ammx_push(stack_t *stack, int32_t value);
-int32_t ammx_peek(stack_t *stack);
-int32_t ammx_pop(stack_t *stack);
+
+b32_t ammx_push(stack_t *stack, int64_t value);
+int64_t ammx_peek(stack_t *stack);
+int64_t ammx_pop(stack_t *stack);
 b32_t ammx_is_leap_year(int32_t year);
 char* ammx_string_from_month(AMMX_MonthTypeDef month);
 char* ammx_string_from_dayofweek(AMMX_DayOfWeekTypeDef day);
@@ -328,14 +341,5 @@ char* ammx_gettime();
 void ammx_datetime();
 entire_file_t ammx_read_entire_file(char* filename);
 void ammx_free_entire_file(entire_file_t* file);
-
-/// @brief Assembler function: maxofthree
-/// @param  integer
-/// @param  integer
-/// @param  integer
-/// @return the max number out of three
-int64_t maxofthree(int64_t, int64_t, int64_t);
-void test_maxofthree();
-
 
 #endif //LIBS_TOOLBOX_H
