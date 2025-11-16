@@ -5,5 +5,5 @@
 ## *Usage:* Guess you'll figure that one out by yourself
 ## *Configuration:* Not required
 ## *Contributing:* Isn't appreciated
-## *Licensing:* Just use it and pretend you made it
+## *Licensing:* Free for all.
 ## *Contact Information:* For what?

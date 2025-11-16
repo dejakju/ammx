@@ -4,6 +4,7 @@ pushd libs\
 
 nasm -fwin64 ammx_build.asm
 nasm -fwin64 ammx_decrement.asm
+nasm -fwin64 ammx_fib.asm
 nasm -fwin64 ammx_increment.asm
 nasm -fwin64 ammx_maxofthree.asm
 

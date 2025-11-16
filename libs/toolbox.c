@@ -249,107 +249,252 @@ ammx_string_from_month(AMMX_MonthTypeDef month)
 char*
 ammx_string_from_dayofweek(AMMX_DayOfWeekTypeDef day)
 {
-    char *result = "(null)";
-    switch (day) {
-        case AMMX_MONDAY:
-        {
-            result = "Monday";
-        } break;
-        case AMMX_TUESDAY:
-        {
-            result = "Tuesday";
-        } break;
-        case AMMX_WEDNESDAY:
-        {
-            result = "Wednesday";
-        } break;
-        case AMMX_THURSDAY:
-        {
-            result = "Thursday";
-        } break;
-        case AMMX_FRIDAY:
-        {
-            result = "Friday";
-        } break;
-        case AMMX_SATURDAY:
-        {
-            result = "Saturday";
-        } break;
-        case AMMX_SUNDAY:
-        {
-            result = "Sunday";
-        } break;
+    // 1. Define the static array for string mapping.
+    // The index of the array must match the enum value.
+    static const char *const DAY_NAMES[] = {
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    };
+
+    // Calculate the size of the array for bounds checking.
+    // The use of AMMX_DAYOFWEEK_COUNT from the enum is safer if available.
+    const size_t ARRAY_LEN = ARRAY_SIZE(DAY_NAMES);
+
+    // 2. Perform bounds checking and return the string.
+    // If the 'day' is out of bounds, return the error string "(null)".
+    if (day >= 0 && day < ARRAY_LEN) {
+        return (char*)DAY_NAMES[day];
+    } else {
+        return "(null)";
     }
-    return (result);
 }
 
+/**
+ * Returns the current date string (format "DD.MM.YYYY").
+ * * WARNING: This function is NOT thread-safe. 
+ * If two threads call this function simultaneously, they will both try to write 
+ * to the same static buffer, leading to a race condition and corrupted data.
+ *
+ * @return A pointer to a static, internal char buffer containing the date string.
+ */
 char*
-ammx_getdate()
+ammx_getdate_static()
 {
-    char *fmtdt = "(null)";
+    // The 'static' keyword ensures the memory for 'fmt' is allocated once in 
+    // the data segment and persists across all function calls.
+    // Because it's not heap memory, NO 'free()' is needed, eliminating the leak.
+    static char sdate[16];
+    
+    // Get current time
     time_t now = time(0);
     struct tm *datetime = localtime(&now);
-    int dt_length = strftime(fmtdt, 16, "%d.%m.%Y", datetime);
-    return fmtdt;
+    
+    // strftime formats the date into the static buffer.
+    strftime(sdate, 16, "%d.%m.%Y", datetime);
+    
+    // Return the pointer to the static buffer.
+    return sdate;
 }
 
+/**
+ * Returns the current time string (format "HH:mm:ss").
+ * * WARNING: This version is NOT thread-safe as it uses a static buffer.
+ * If two threads call this function simultaneously, they will both try to write 
+ * to the same static buffer, leading to a race condition and corrupted data.
+ *
+ * @return A pointer to a static, internal char buffer containing the time string.
+ */
 char*
-ammx_gettime()
+ammx_gettime_static()
 {
-    char *fmtdt = "(null)";
+    // Static storage duration: The buffer exists for the program's lifetime.
+    // It is allocated in the data segment, NOT the heap, so no free() is needed.
+    static char stime[16];
+    
     time_t now = time(0);
     struct tm *datetime = localtime(&now);
-    int dt_length = strftime(fmtdt, 16, "%H:%M:%S", datetime);
-    return fmtdt;
+    
+    strftime(stime, 16, "%H:%M:%S", datetime);
+    
+    return stime; // Return pointer to the static buffer.
 }
 
-/******************************************************* */
+/**
+ * Stores the current date string (format "DD.MM.YYYY") in the provided buffer.
+ * The caller is responsible for allocating and managing the buffer memory.
+ *
+ * @param buffer Pointer to the caller-allocated buffer.
+ * @param buffer_size The size of the buffer in bytes.
+ * @return The number of characters placed in the array (excluding the null terminator), or 0 on error.
+ */
+int
+ammx_getdate(char* buffer, size_t buffer_size)
+{
+    // The buffer is managed by the caller, so no heap allocation is needed here.
 
+    if (buffer == NULL || buffer_size == 0) {
+        return 0; // Return 0 for failure (similar to strftime standard)
+    }
+
+    // Get current time
+    time_t now = time(0);
+    struct tm *datetime = localtime(&now);
+
+    // strftime writes the formatted date directly to the caller's buffer.
+    size_t dt_length = strftime(buffer, buffer_size, "%d.%m.%Y", datetime);
+
+    return (int)dt_length;
+}
+
+/**
+ * Stores the current time string (format "HH:mm:ss") in the provided buffer.
+ * The caller is responsible for allocating and managing the buffer memory.
+ *
+ * @param buffer Pointer to the caller-allocated buffer.
+ * @param buffer_size The size of the buffer in bytes.
+ * @return The number of characters placed in the array (excluding the null terminator), or -1 on error.
+ */
+int
+ammx_gettime(char* buffer, size_t buffer_size)
+{
+    // The buffer is passed in by the caller, so we don't need malloc/free here.
+
+    if (buffer == NULL || buffer_size == 0) {
+        return -1; // Error check for invalid buffer
+    }
+
+    time_t now = time(0);
+    struct tm *datetime = localtime(&now);
+
+    // strftime writes directly to the caller's buffer.
+    size_t dt_length = strftime(buffer, buffer_size, "%H:%M:%S", datetime);
+
+    return (int)dt_length;
+}
+
+
+/**
+ * Reads the entire contents of a file into a newly allocated buffer.
+ * The caller is responsible for freeing the Result.Contents buffer when done.
+ *
+ * @param filename The path to the file.
+ * @return An entire_file_t structure. On success, Size > 0 and Contents != NULL.
+ * On failure, Size = 0 and Contents = NULL.
+ */
 entire_file_t
 ammx_read_entire_file(char* filename)
 {
     entire_file_t Result = {0};
+    FILE* file = NULL;
+    long file_size_l = 0; // Use long for ftell, then cast/check against size_t
 
-    FILE* file = fopen(filename, "rb");
-    if(file)
+    // 1. Attempt to open the file for reading in binary mode.
+    file = fopen(filename, "rb");
+    if (!file)
     {
-        fseek(file, 0, SEEK_END);
-        Result.Size = ftell(file);
-        fseek(file, 0, SEEK_SET);
+        // Use fprintf(stderr, ...) for better error reporting outside the main flow.
+        fprintf(stderr, "ERROR: Unable to open file \"%s\"\n", filename);
+        // Result is already {0, NULL}, so we return immediately.
+        return Result;
+    }
+
+    // 2. Determine file size.
+    // Error check for fseek and ftell is robust.
+    if (fseek(file, 0, SEEK_END) != 0 || (file_size_l = ftell(file)) == -1)
+    {
+        fprintf(stderr, "ERROR: Cannot determine size of file \"%s\"\n", filename);
+        // Jump to the cleanup label to close the file.
+        goto cleanup;
+    }
+
+    // A. Check for potential overflow: long to size_t.
+    // Although rare on modern systems, it ensures size_t can hold the size.
+    if (file_size_l < 0 || (size_t)file_size_l != file_size_l)
+    {
+        fprintf(stderr, "ERROR: File \"%s\" is too large to handle with size_t (%ld bytes).\n", filename, file_size_l);
+        goto cleanup;
+    }
+    Result.Size = (size_t)file_size_l;
+
+    // 3. Allocate memory, including an extra byte for a null terminator (optional but safe).
+    // Note: If Result.Size is 0 (empty file), malloc(0) might return NULL or a valid pointer.
+    // The conditional check below handles both cases gracefully.
+    
+    // Allocate space for the file contents + 1 byte for null terminator (for text safety)
+    Result.Contents = malloc(Result.Size + 1);
+    
+    if (!Result.Contents)
+    {
+        fprintf(stderr, "ERROR: Failed to allocate %zu bytes for file \"%s\".\n", Result.Size + 1, filename);
+        goto cleanup;
+    }
+
+        // B. Safely null-terminate the allocated buffer (even for binary data, for safety).
+    ((char*)Result.Contents)[Result.Size] = '\0';
+    
+    // 4. Read contents.
+    // Reset file pointer to the beginning.
+    fseek(file, 0, SEEK_SET);
+
+    // Read the file. fread returns the number of items successfully read.
+    size_t items_read = fread(Result.Contents, Result.Size, 1, file);
+    
+    if (items_read != 1)
+    {
+        // An error occurred during reading, or not all bytes were read.
+        // This is a critical failure.
+        fprintf(stderr, "ERROR: Failed to read all bytes from file \"%s\".\n", filename);
         
-        Result.Contents = (void *)malloc(Result.Size);
-        if(Result.Contents)
-        {
-            if(Result.Size)
-            {
-                fread(Result.Contents, Result.Size, 1, file);
-            }
-        }
-        else
-        {
-            Result.Contents = 0;
-            Result.Size = 0;
-        }
+        // We must free the memory we successfully allocated before jumping to cleanup.
+        free(Result.Contents);
+        Result.Contents = NULL;
+        Result.Size = 0;
         
+        goto cleanup;
+    }
+
+    // 5. Final Cleanup (always executed).
+cleanup:
+    // This label ensures fclose is called regardless of where an error occurred.
+    if (file)
+    {
         fclose(file);
     }
-    else
-    {
-        printf("ERROR: Unable to load \"%s\"\n", filename);
-    }
-    
-    
-    return(Result);
+
+    return Result;
 }
 
+/**
+ * Safely frees the memory allocated for file contents and resets the structure members.
+ * This function is robust against being called with a NULL pointer.
+ *
+ * @param file A pointer to the entire_file_t structure to be cleaned up.
+ */
 void
 ammx_free_entire_file(entire_file_t* file)
 {
-    if(file->Contents)
+    // 1. Robustness Check: Ensure the input pointer itself is not NULL.
+    // Accessing 'file->Contents' when 'file' is NULL causes a segmentation fault/crash.
+    if (!file)
+    {
+        return; // Safety first: Do nothing if the pointer to the structure is invalid.
+    }
+
+    // 2. Core Cleanup: Check and free the contents buffer.
+    if (file->Contents)
     {
         free(file->Contents);
-        file->Contents = 0;
+        // Best practice: Set the pointer to NULL after freeing to prevent
+        // "double-free" or "use-after-free" bugs if the function is called again.
+        file->Contents = NULL; 
     }
     
+    // 3. Cleanup Metadata: Reset the size.
+    // This is good practice to ensure the structure is marked as "empty" or "cleared."
     file->Size = 0;
 }

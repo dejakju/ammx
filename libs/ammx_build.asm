@@ -4,14 +4,14 @@
 ;*   $AUTHOR:    Goran (dejakju@gmail.com)
 ;
 ; -----------------------------------------------------------------------------
-; A 64-bit function that returns the maximum value of its three 64-bit integer
-; arguments. The function has signature:
+; The functions' C signature:
 ;
-;   viod ammx_build()
+;   void ammx_build()
 ;
-; Calling convention: Microsoft x64 (first four integer/pointer arguments passed in RCX, RDX, R8, R9)
-; Note that the parameters have already been passed in rcx, rdx, and r8. We
-; just have to return the value in rax.
+; Description: prints the build date/time and nasm version to stdout.
+; Input: void
+; Output: void
+; Note: A newline terminator is added to the output - beware
 ; -----------------------------------------------------------------------------
 
     global  ammx_build

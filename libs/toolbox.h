@@ -83,7 +83,8 @@ typedef enum AMMX_DayOfWeekTypeDef {
     AMMX_WEDNESDAY,
     AMMX_THURSDAY,
     AMMX_FRIDAY,
-    AMMX_SATURDAY
+    AMMX_SATURDAY,
+    AMMX_DAYOFWEEK_COUNT
 } AMMX_DayOfWeekTypeDef;
 
 typedef enum AMMX_StackTypeDef {
@@ -302,6 +303,7 @@ typedef struct entire_file_t
 
 extern void ammx_build();
 extern int64_t ammx_decrement(int64_t);
+extern int64_t ammx_fib(int64_t);
 extern int64_t ammx_increment(int64_t);
 extern int64_t ammx_maxofthree(int64_t, int64_t, int64_t);
 
@@ -336,9 +338,10 @@ int64_t ammx_pop(stack_t *stack);
 b32_t ammx_is_leap_year(int32_t year);
 char* ammx_string_from_month(AMMX_MonthTypeDef month);
 char* ammx_string_from_dayofweek(AMMX_DayOfWeekTypeDef day);
-char* ammx_getdate();
-char* ammx_gettime();
-void ammx_datetime();
+int ammx_getdate(char* buffer, size_t buffer_size);
+char* ammx_getdate_static();
+int ammx_gettime(char* buffer, size_t buffer_size);
+char* ammx_gettime_static();
 entire_file_t ammx_read_entire_file(char* filename);
 void ammx_free_entire_file(entire_file_t* file);
 
