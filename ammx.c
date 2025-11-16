@@ -4,7 +4,6 @@
     $AUTHOR:    Goran (dejakju@gmail.com)
 */
 //------------------------------- AMMX LIBRARIES
-// #include <conio.h>
 #include <inttypes.h>
 #include <stdlib.h>
 #include "libs/toolbox.h"
@@ -18,8 +17,7 @@ int main()
     ammx_version();
 
     entire_file_t f = ammx_read_entire_file("ammx.bin");
-    printf("%.*s\n", 5, (char*) f.Contents);
-    printf("File size: %d\n", f.Size);
+    printf("(binary size = %ld bytes)\n", f.Size);
     printf("Upper case letters: %.*s\n", 26, (char*) f.Contents + 0x41);
     printf("Lower case letters: %.*s\n", 26, (char*) f.Contents + 0x61);
     printf("Numbers: %.*s\n", 10, (char*) f.Contents + 0x30);

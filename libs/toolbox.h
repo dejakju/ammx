@@ -301,11 +301,11 @@ typedef struct entire_file_t
 //------------------------------- Assembler Declarations
 // NOTE(dejakju): 
 
-extern void ammx_build();
-extern int64_t ammx_decrement(int64_t);
-extern int64_t ammx_fib(int64_t);
-extern int64_t ammx_increment(int64_t);
-extern int64_t ammx_maxofthree(int64_t, int64_t, int64_t);
+extern char*    ammx_build();
+extern int64_t  ammx_decrement(int64_t);
+extern int64_t  ammx_fib(int64_t);
+extern int64_t  ammx_increment(int64_t);
+extern int64_t  ammx_maxofthree(int64_t, int64_t, int64_t);
 
 
 ////////////////////////////////

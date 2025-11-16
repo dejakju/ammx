@@ -19,10 +19,24 @@
 
 void
 ammx_version() {
-    printf("\x1b[1;36m AMMX\x1b[0m version %d.%d - ", AMMX_VERSION, AMMX_REVISION);
-    ammx_build();
-    printf("Email: dejakju@gmail.com\n");
-    printf("Web: https://github.com/dejakju/ammx\n");
+
+    char *build_info_string = NULL;
+
+    // 1. Call the assembly function
+    build_info_string = ammx_build(); 
+
+    // 2. Check and use the string
+    if (build_info_string != NULL) {
+        printf("\x1b[1;36m AMMX\x1b[0m version %d.%d - %s\n", AMMX_VERSION, AMMX_REVISION, build_info_string);
+        printf("Email: dejakju@gmail.com\n");
+        printf("Web: https://github.com/dejakju/ammx\n");
+        
+        // 3. Free the heap memory
+        free(build_info_string);
+    }
+
+    // 4. Good practice cleanup
+    build_info_string = NULL;
 }
 
 b32_t
