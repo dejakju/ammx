@@ -1,7 +1,7 @@
 ;
-;*   $VER:       ammx_maxofthree.asm 1.2
-;*   $DATE:      2025-10-28 (2025-11-16)
-;*   $AUTHOR:    Goran (dejakju@gmail.com)
+;*  $VER:       ammx_maxofthree.asm 1.2
+;*  $DATE:      2025-10-28 (2025-11-16)
+;*  $AUTHOR:    Goran (dejakju@gmail.com)
 ;
 ; -----------------------------------------------------------------------------
 ; The functions' C signature:

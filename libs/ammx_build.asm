@@ -1,6 +1,7 @@
-;* $VER:           ammx_build.asm 1.5
-;* $DATE:          2025-11-16 (2025-11-16)
-;* $AUTHOR:        Goran (dejakju@gmail.com)
+;
+;*  $VER:       ammx_build.asm 1.5
+;*  $DATE:      2025-11-16 (2025-11-16)
+;*  $AUTHOR:    Goran (dejakju@gmail.com)
 ;
 ; -----------------------------------------------------------------------------
 ; The functions' C signature:

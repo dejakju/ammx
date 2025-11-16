@@ -1,7 +1,7 @@
 /*
-    $VER:       toolbox.h 1.1
-    $DATE:      2023-12-01 (2025-11-15)
-    $AUTHOR:    Goran (dejakju@gmail.com)
+ *  $VER:       toolbox.h 1.1
+ *  $DATE:      2023-12-01 (2025-11-16)
+ *  $AUTHOR:    Goran (dejakju@gmail.com)
 */
 
 #ifndef LIBS_TOOLBOX_H
@@ -148,6 +148,12 @@ static f64_t tau_f64 = 6.28318530718;
 //------------------------------- Compound Types
 // NOTE(dejakju): 
 
+typedef struct entire_file_t
+{
+    size_t Size;
+    void *Contents;
+} entire_file_t ;
+
 typedef struct stack_t {
     int64_t values[AMMX_STACK_LENGTH];
     int64_t top;
@@ -290,20 +296,15 @@ typedef struct preferences_t {
 
 } preferences_t;
 
-typedef struct entire_file_t
-{
-    size_t Size;
-    void *Contents;
-} entire_file_t ;
-
 
 ////////////////////////////////
-//------------------------------- Assembler Declarations
+//------------------------------- Assembler Modules
 // NOTE(dejakju): 
 
 extern char*    ammx_build();
 extern int64_t  ammx_decrement(int64_t);
 extern int64_t  ammx_fib(int64_t);
+extern int64_t  ammx_fact(int64_t);
 extern int64_t  ammx_increment(int64_t);
 extern int64_t  ammx_maxofthree(int64_t, int64_t, int64_t);
 
@@ -328,10 +329,8 @@ int64_t ammx_min(int64_t a, int64_t b);
 void ammx_swap(f64_t *a, f64_t *b);
 void ammx_fflush();
 char* ammx_strrev(char *string);
-
 void ammx_d2c(int64_t number, char *buffer);
 int64_t ammx_c2d(char *string);
-
 b32_t ammx_push(stack_t *stack, int64_t value);
 int64_t ammx_peek(stack_t *stack);
 int64_t ammx_pop(stack_t *stack);

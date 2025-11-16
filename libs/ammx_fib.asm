@@ -1,7 +1,7 @@
 ;
-;*   $VER:       ammx_fib.asm 1.0
-;*   $DATE:      2025-11-16 (2025-11-16)
-;*   $AUTHOR:    Goran (dejakju@gmail.com)
+;*  $VER:       ammx_fib.asm 1.0
+;*  $DATE:      2025-11-16 (2025-11-16)
+;*  $AUTHOR:    Goran (dejakju@gmail.com)
 ;
 ; -----------------------------------------------------------------------------
 ; The functions' C signature:

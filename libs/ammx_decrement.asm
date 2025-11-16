@@ -1,7 +1,7 @@
 ;
-;*   $VER:       ammx_decrement.asm 1.0
-;*   $DATE:      2025-10-28 (2025-10-28)
-;*   $AUTHOR:    Goran (dejakju@gmail.com)
+;*  $VER:       ammx_decrement.asm 1.0
+;*  $DATE:      2025-10-28 (2025-10-28)
+;*  $AUTHOR:    Goran (dejakju@gmail.com)
 ;
 ; -----------------------------------------------------------------------------
 ; The functions' C signature:

@@ -1,8 +1,9 @@
 /*
-    $VER:       ammx.c 1.1
-    $DATE:      2023-12-01 (2025-11-15)
-    $AUTHOR:    Goran (dejakju@gmail.com)
+ *  $VER:       ammx.c 1.1
+ *  $DATE:      2023-12-01 (2025-11-16)
+ *  $AUTHOR:    Goran (dejakju@gmail.com)
 */
+
 //------------------------------- AMMX LIBRARIES
 #include <inttypes.h>
 #include <stdlib.h>
@@ -23,6 +24,11 @@ int main()
     printf("Numbers: %.*s\n", 10, (char*) f.Contents + 0x30);
     ammx_free_entire_file(&f);
 
+    for (int i = 0; i < 50; i++)
+        printf("fib(%lld) = %lld\n", i, ammx_fib(i));
+
+            for (int i = 0; i < 10; i++)
+        printf("fact(%lld) = %lld\n", i, ammx_fact(i));
 
 //------------------------------- EXIT WITH A SMILE ON YOUR FACE
 	return (AMMX_RETURN_OK);

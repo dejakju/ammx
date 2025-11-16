@@ -1,9 +1,13 @@
 @echo off
+rem $VER:       build.bat 1.24
+rem $DATE:      2023-11-16 (2025-11-16)
+rem $AUTHOR:    Goran (dejakju@gmail.com)
 
 pushd libs\
 
 nasm -fwin64 ammx_build.asm
 nasm -fwin64 ammx_decrement.asm
+nasm -fwin64 ammx_fact.asm
 nasm -fwin64 ammx_fib.asm
 nasm -fwin64 ammx_increment.asm
 nasm -fwin64 ammx_maxofthree.asm
