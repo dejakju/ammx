@@ -1,17 +1,19 @@
 ;
-;*   $VER:       ammx_maxofthree.asm 1.1
-;*   $DATE:      2025-10-28 (2025-11-15)
+;*   $VER:       ammx_maxofthree.asm 1.2
+;*   $DATE:      2025-10-28 (2025-11-16)
 ;*   $AUTHOR:    Goran (dejakju@gmail.com)
 ;
 ; -----------------------------------------------------------------------------
-; A 64-bit function that returns the maximum value of its three 64-bit integer
-; arguments. The function has signature:
+; The functions' C signature:
 ;
 ;   int64_t ammx_maxofthree(int64_t x, int64_t y, int64_t z)
 ;
-; Calling convention: Microsoft x64 (first four integer/pointer arguments passed in RCX, RDX, R8, R9)
-; Note that the parameters have already been passed in rcx, rdx, and r8. We
-; just have to return the value in rax.
+; Description: return the greatest of the three numbers (x,y,z).
+; Input (x): RCX (first argument)
+; Input (y): RDX (second argument)
+; Input (z): R8 (third argument)
+; Output (ammx_maxofthree(x,y,z)): RAX
+; Assumes x, y, z are all of valid int64_t type.
 ; -----------------------------------------------------------------------------
 
         global  ammx_maxofthree
