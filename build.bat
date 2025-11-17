@@ -1,6 +1,6 @@
 @echo off
-rem $VER:       build.bat 1.24
-rem $DATE:      2023-11-16 (2025-11-16)
+rem $VER:       build.bat 1.27
+rem $DATE:      2023-12-01 (2025-11-17)
 rem $AUTHOR:    Goran (dejakju@gmail.com)
 
 pushd libs\
@@ -9,15 +9,23 @@ nasm -fwin64 ammx_build.asm
 nasm -fwin64 ammx_decrement.asm
 nasm -fwin64 ammx_fact.asm
 nasm -fwin64 ammx_fib.asm
+nasm -fwin64 ammx_getch.asm
+nasm -fwin64 ammx_getchar.asm
 nasm -fwin64 ammx_increment.asm
 nasm -fwin64 ammx_maxofthree.asm
+nasm -fwin64 ammx_ncr.asm
+nasm -fwin64 ammx_puts.asm
 
+gcc -m64 -c stack.c
 gcc -m64 -c toolbox.c
-ar rcs toolbox.lib *.o *.obj
+ar rcs ammx.lib *.o *.obj
 
 popd
 
-gcc -m64 ammx.c -Llibs -ltoolbox -o ammx
+gcc -m64 ammx.c -Llibs -lammx -o ammx
+
+del libs\*.o
+del libs\*.obj
 
 rem ############################################################################
 rem # ar: The GNU archiver tool (used for creating static libraries)

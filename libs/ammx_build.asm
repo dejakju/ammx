@@ -23,7 +23,7 @@
 ammx_build:
     ; --- 1. Prologue & Callee-Saved Register Save ---
     sub     rsp, 20h                ; Windows x64 ABI: Shadow space (32 bytes).
-    push    rbx                     ; **FIX:** Save RBX (Non-Volatile) to the stack.
+    push    rbx                     ; Save RBX (Non-Volatile) to the stack.
 
     ; --- 2. Allocate Memory (malloc) ---
     mov     rcx, 80h                ; 1st arg (size): Request 128 bytes (80h).
@@ -34,7 +34,7 @@ ammx_build:
     je      epilogue_error_no_free  
     
     ; --- FIX: Save Pointer to Non-Volatile Register ---
-    mov     rbx, rax                ; **FIX:** Save the buffer pointer (RAX) into RBX (safe across calls).
+    mov     rbx, rax                ; Save the buffer pointer (RAX) into RBX (safe across calls).
 
     ; --- 3. Format String (sprintf) ---
     ; Arguments: str (RCX), format (RDX), arg1 (R8), arg2 (R9), arg3 (Stack)
@@ -61,7 +61,7 @@ epilogue_error_no_free:
     xor     rax, rax                ; Ensure RAX is 0 (NULL).
     
 epilogue_return:
-    pop     rbx                     ; **FIX:** Restore the original value of RBX.
+    pop     rbx                     ; Restore the original value of RBX.
     add     rsp, 20h                ; Restore stack pointer (deallocate shadow space).
     ret                             ; Return (RAX holds the allocated string pointer).
 

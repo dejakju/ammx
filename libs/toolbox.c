@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 ////////////////////////////////
 //------------------------------- Implementations
 // NOTE(dejakju): 
@@ -156,38 +157,6 @@ ammx_c2d(char *string)
     }
 
     return total;
-}
-
-b32_t
-ammx_push(stack_t *stack, int64_t value)
-{
-    if (stack->top >= AMMX_STACK_LENGTH - 1) return 0;
-
-    stack->top++;
-    stack->values[stack->top] = value;
-
-    return 1;
-}
-
-int64_t 
-ammx_peek(stack_t *stack)
-{
-    if (stack->top == AMMX_STACK_EMPTY) return AMMX_STACK_ISEMPTY;
-
-    int64_t result = stack->values[stack->top];
-
-    return result;
-}
-
-int64_t 
-ammx_pop(stack_t *stack)
-{
-    if (stack->top == AMMX_STACK_EMPTY) return AMMX_STACK_ISEMPTY;
-
-    int64_t result = stack->values[stack->top];
-    stack->top--;
-
-    return result;
 }
 
 b32_t

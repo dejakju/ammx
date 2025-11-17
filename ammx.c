@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <stdlib.h>
 #include "libs/toolbox.h"
+#include "libs/stack.h"
 
 
 //------------------------------- MAIN ENTRY
@@ -24,11 +25,23 @@ int main()
     printf("Numbers: %.*s\n", 10, (char*) f.Contents + 0x30);
     ammx_free_entire_file(&f);
 
-    for (int i = 0; i < 50; i++)
-        printf("fib(%lld) = %lld\n", i, ammx_fib(i));
+    stack_t myStack;
+    init_stack(&myStack);
 
-            for (int i = 0; i < 10; i++)
-        printf("fact(%lld) = %lld\n", i, ammx_fact(i));
+    for (int i = 15; i <= 20; i++) {
+        push(&myStack, ammx_fib(i));
+        push(&myStack, ammx_fact(i));
+        printf("fib(%lld) = %lld, fact(%lld) = %lld\n", i, pop(&myStack), i, pop(&myStack));
+    }
+
+    char buffer[255];
+    sprintf(buffer, "Date & Time: %s %s\n", ammx_getdate_static(), ammx_gettime_static());
+    ammx_puts(buffer);
+
+    printf("Press any key: ");
+    int64_t c = ammx_getch();
+    printf("\nYou pressed: %c [%lld]\n", (char)c, c);
+
 
 //------------------------------- EXIT WITH A SMILE ON YOUR FACE
 	return (AMMX_RETURN_OK);

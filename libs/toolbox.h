@@ -73,7 +73,8 @@ typedef enum AMMX_MonthTypeDef {
     AMMX_SEPTEMBER,
     AMMX_OCTOBER,
     AMMX_NOVEMBER,
-    AMMX_DECEMBER
+    AMMX_DECEMBER,
+    AMMX_MONTH_COUNT
 } AMMX_MonthTypeDef;
 
 typedef enum AMMX_DayOfWeekTypeDef {
@@ -86,12 +87,6 @@ typedef enum AMMX_DayOfWeekTypeDef {
     AMMX_SATURDAY,
     AMMX_DAYOFWEEK_COUNT
 } AMMX_DayOfWeekTypeDef;
-
-typedef enum AMMX_StackTypeDef {
-    AMMX_STACK_EMPTY    = (uint64_t) 0x000000007FFFFFFF,
-    AMMX_STACK_LENGTH   = (uint64_t) 0x0000000000007FFF,
-    AMMX_STACK_ISEMPTY  = (uint64_t) 0x000000007FFFFFFF
-} AMMX_StackTypeDef;
 
 
 ////////////////////////////////
@@ -153,11 +148,6 @@ typedef struct entire_file_t
     size_t Size;
     void *Contents;
 } entire_file_t ;
-
-typedef struct stack_t {
-    int64_t values[AMMX_STACK_LENGTH];
-    int64_t top;
-} stack_t;
 
 typedef struct v2s32_t {
     int32_t x;
@@ -301,13 +291,16 @@ typedef struct preferences_t {
 //------------------------------- Assembler Modules
 // NOTE(dejakju): 
 
-extern char*    ammx_build();
+extern char*    ammx_build(void);
 extern int64_t  ammx_decrement(int64_t);
 extern int64_t  ammx_fib(int64_t);
 extern int64_t  ammx_fact(int64_t);
+extern int64_t  ammx_getch(void);
+extern int64_t  ammx_getchar(void);
 extern int64_t  ammx_increment(int64_t);
 extern int64_t  ammx_maxofthree(int64_t, int64_t, int64_t);
-
+extern int64_t  ammx_ncr(int64_t, int64_t);
+extern int64_t  ammx_puts(const char*);
 
 ////////////////////////////////
 //------------------------------- Function Declarations
@@ -331,9 +324,6 @@ void ammx_fflush();
 char* ammx_strrev(char *string);
 void ammx_d2c(int64_t number, char *buffer);
 int64_t ammx_c2d(char *string);
-b32_t ammx_push(stack_t *stack, int64_t value);
-int64_t ammx_peek(stack_t *stack);
-int64_t ammx_pop(stack_t *stack);
 b32_t ammx_is_leap_year(int32_t year);
 char* ammx_string_from_month(AMMX_MonthTypeDef month);
 char* ammx_string_from_dayofweek(AMMX_DayOfWeekTypeDef day);
