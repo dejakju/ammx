@@ -36,52 +36,58 @@ ammx_version() {
     build_info_string = NULL;
 }
 
-b32_t
-ammx_and(b32_t a, b32_t b)
+int64_t
+ammx_and(int64_t a, int64_t b)
 {
 	return (a && b);
 }
 
-b32_t
-ammx_or(b32_t a, b32_t b)
+int64_t
+ammx_or(int64_t a, int64_t b)
 {
 	return (a || b);
 }
 
-b32_t
-ammx_not(b32_t a)
+int64_t
+ammx_not(int64_t a)
 {
 	return (!a);
 }
 
-b32_t
-ammx_nand(b32_t a, b32_t b)
+int64_t
+ammx_nand(int64_t a, int64_t b)
 {
 	return !(a && b);
 }
 
-b32_t
-ammx_nor(b32_t a, b32_t b)
+int64_t
+ammx_nor(int64_t a, int64_t b)
 {
 	return !(a || b);
 }
 
-b32_t
-ammx_xor(b32_t a, b32_t b)
+int64_t
+ammx_xor(int64_t a, int64_t b)
 {
 	return (!a && b || a && !b);
 }
 
-b32_t
-ammx_xnor(b32_t a, b32_t b)
+int64_t
+ammx_xnor(int64_t a, int64_t b)
 {
 	return (a && b || !a && !b);
 }
 
-b32_t
-ammx_imp(b32_t a, b32_t b)
+int64_t
+ammx_imp(int64_t a, int64_t b)
 {
 	return !(a && !b);
+}
+
+int64_t
+ammx_nimp(int64_t a, int64_t b)
+{
+	return (a && !b);
 }
 
 int64_t
@@ -103,7 +109,7 @@ ammx_min(int64_t a, int64_t b)
 }
 
 void
-ammx_swap(f64_t *a, f64_t *b)
+ammx_swap(int64_t *a, int64_t *b)
 {
 	*a = *a + *b;
 	*b = *a - *b;
@@ -158,204 +164,6 @@ ammx_c2d(char *string)
 
     return total;
 }
-
-b32_t
-ammx_is_leap_year(int32_t year)
-{
-    if (year % 4 != 0) return 0;
-    else if (year % 100 != 0) return 1;
-    else if (year % 400 != 0) return 0;
-    else return 1;
-}
-
-char*
-ammx_string_from_month(AMMX_MonthTypeDef month)
-{
-    char *result = "(null)";
-    switch (month) {
-        case AMMX_JANUARY:
-        {
-            result = "January";
-        } break;
-        case AMMX_FEBRUARY:
-        {
-            result = "February";
-        } break;
-        case AMMX_MARCH:
-        {
-            result = "March";
-        } break;
-        case AMMX_APRIL:
-        {
-            result = "April";
-        } break;
-        case AMMX_MAY:
-        {
-            result = "May";
-        } break;
-        case AMMX_JUNE:
-        {
-            result = "June";
-        } break;
-        case AMMX_JULY:
-        {
-            result = "July";
-        } break;
-        case AMMX_AUGUST:
-        {
-            result = "August";
-        } break;
-        case AMMX_SEPTEMBER:
-        {
-            result = "September";
-        } break;
-        case AMMX_OCTOBER:
-        {
-            result = "October";
-        } break;
-        case AMMX_NOVEMBER:
-        {
-            result = "November";
-        } break;
-        case AMMX_DECEMBER:
-        {
-            result = "December";
-        } break;
-    }
-    return (result);
-}
-
-char*
-ammx_string_from_dayofweek(AMMX_DayOfWeekTypeDef day)
-{
-    // 1. Define the static array for string mapping.
-    // The index of the array must match the enum value.
-    static const char *const DAY_NAMES[] = {
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"
-    };
-
-    // Calculate the size of the array for bounds checking.
-    // The use of AMMX_DAYOFWEEK_COUNT from the enum is safer if available.
-    const size_t ARRAY_LEN = ARRAY_SIZE(DAY_NAMES);
-
-    // 2. Perform bounds checking and return the string.
-    // If the 'day' is out of bounds, return the error string "(null)".
-    if (day >= 0 && day < ARRAY_LEN) {
-        return (char*)DAY_NAMES[day];
-    } else {
-        return "(null)";
-    }
-}
-
-/**
- * Returns the current date string (format "DD.MM.YYYY").
- * * WARNING: This function is NOT thread-safe. 
- * If two threads call this function simultaneously, they will both try to write 
- * to the same static buffer, leading to a race condition and corrupted data.
- *
- * @return A pointer to a static, internal char buffer containing the date string.
- */
-char*
-ammx_getdate_static()
-{
-    // The 'static' keyword ensures the memory for 'fmt' is allocated once in 
-    // the data segment and persists across all function calls.
-    // Because it's not heap memory, NO 'free()' is needed, eliminating the leak.
-    static char sdate[16];
-    
-    // Get current time
-    time_t now = time(0);
-    struct tm *datetime = localtime(&now);
-    
-    // strftime formats the date into the static buffer.
-    strftime(sdate, 16, "%d.%m.%Y", datetime);
-    
-    // Return the pointer to the static buffer.
-    return sdate;
-}
-
-/**
- * Returns the current time string (format "HH:mm:ss").
- * * WARNING: This version is NOT thread-safe as it uses a static buffer.
- * If two threads call this function simultaneously, they will both try to write 
- * to the same static buffer, leading to a race condition and corrupted data.
- *
- * @return A pointer to a static, internal char buffer containing the time string.
- */
-char*
-ammx_gettime_static()
-{
-    // Static storage duration: The buffer exists for the program's lifetime.
-    // It is allocated in the data segment, NOT the heap, so no free() is needed.
-    static char stime[16];
-    
-    time_t now = time(0);
-    struct tm *datetime = localtime(&now);
-    
-    strftime(stime, 16, "%H:%M:%S", datetime);
-    
-    return stime; // Return pointer to the static buffer.
-}
-
-/**
- * Stores the current date string (format "DD.MM.YYYY") in the provided buffer.
- * The caller is responsible for allocating and managing the buffer memory.
- *
- * @param buffer Pointer to the caller-allocated buffer.
- * @param buffer_size The size of the buffer in bytes.
- * @return The number of characters placed in the array (excluding the null terminator), or 0 on error.
- */
-int
-ammx_getdate(char* buffer, size_t buffer_size)
-{
-    // The buffer is managed by the caller, so no heap allocation is needed here.
-
-    if (buffer == NULL || buffer_size == 0) {
-        return 0; // Return 0 for failure (similar to strftime standard)
-    }
-
-    // Get current time
-    time_t now = time(0);
-    struct tm *datetime = localtime(&now);
-
-    // strftime writes the formatted date directly to the caller's buffer.
-    size_t dt_length = strftime(buffer, buffer_size, "%d.%m.%Y", datetime);
-
-    return (int)dt_length;
-}
-
-/**
- * Stores the current time string (format "HH:mm:ss") in the provided buffer.
- * The caller is responsible for allocating and managing the buffer memory.
- *
- * @param buffer Pointer to the caller-allocated buffer.
- * @param buffer_size The size of the buffer in bytes.
- * @return The number of characters placed in the array (excluding the null terminator), or -1 on error.
- */
-int
-ammx_gettime(char* buffer, size_t buffer_size)
-{
-    // The buffer is passed in by the caller, so we don't need malloc/free here.
-
-    if (buffer == NULL || buffer_size == 0) {
-        return -1; // Error check for invalid buffer
-    }
-
-    time_t now = time(0);
-    struct tm *datetime = localtime(&now);
-
-    // strftime writes directly to the caller's buffer.
-    size_t dt_length = strftime(buffer, buffer_size, "%H:%M:%S", datetime);
-
-    return (int)dt_length;
-}
-
 
 /**
  * Reads the entire contents of a file into a newly allocated buffer.

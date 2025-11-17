@@ -1,5 +1,5 @@
 @echo off
-rem $VER:       build.bat 1.27
+rem $VER:       build.bat 1.28
 rem $DATE:      2023-12-01 (2025-11-17)
 rem $AUTHOR:    Goran (dejakju@gmail.com)
 
@@ -16,6 +16,7 @@ nasm -fwin64 ammx_maxofthree.asm
 nasm -fwin64 ammx_ncr.asm
 nasm -fwin64 ammx_puts.asm
 
+gcc -m64 -c datetime.c
 gcc -m64 -c stack.c
 gcc -m64 -c toolbox.c
 ar rcs ammx.lib *.o *.obj
